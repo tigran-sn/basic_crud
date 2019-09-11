@@ -1,0 +1,14 @@
+.LoginForm {
+}
+.LoginForm label {
+  font-size: 14px;
+  text-align: left;
+  display: block;
+}
+.LoginForm input {
+  border: 1px solid #000;
+  padding: 5px;
+}
+.LoginForm input:focus {
+  border: 1px solid rgb(30, 223, 236);
+}
