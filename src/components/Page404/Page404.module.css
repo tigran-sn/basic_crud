@@ -1,0 +1,19 @@
+.Page404 {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Page404 h1 {
+    font-size: 15vw;
+    line-height: 1;
+    margin: 15px 0;
+}
+
+.Page404 h3 {
+    font-size: 7vw;
+    line-height: 1;
+    margin: 5px 0;
+}
