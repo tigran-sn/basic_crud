@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+    <style>
+        path {
+            fill: rgb(6, 158, 6);
+        }
+    </style>
+    <g>
+        <path d="M429.8,547.3L338.9,457l-68.7,69.2l159.8,158.7l300-299.1L661,316.8L429.8,547.3z"/>
+        <path d="M500,10C229.8,10,10,229.8,10,500s219.8,490,490,490s490-219.8,490-490S770.2,10,500,10z M500,859.9c-198.5,0-360-161.5-360-359.9s161.5-359.9,360-359.9c198.5,0,360,161.5,360,359.9S698.5,859.9,500,859.9z"/>
+    </g>
+</svg>

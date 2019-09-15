@@ -1,25 +1,31 @@
 import React, { Component } from "react";
 import Button from "../Button";
 import Modal from "../../UI/Modal";
+import { Route, Redirect } from "react-router-dom";
+import successIcon from "../../assets/icons/success.svg";
 
 import classes from "./RegistrationForm.module.css";
 
-import { checkPassword, validateEmail, checkForm } from "../../helpers";
+import { checkPassword, validateEmail } from "../../helpers";
 
 class RegistrationForm extends Component {
   state = {
     modalIsOpen: false,
     errorMessage: "",
+    dataFromServer: {},
     formData: {
       email: "",
       password: "",
       confirmPassword: ""
     }
   };
+  emptyFormData = this.state.formData;
   myRef = React.createRef();
   formRef = React.createRef();
   componentDidMount() {
     this.myRef.current.focus();
+    // const { match } = this.props;
+    // console.log(this.props.routeData);
   }
   handleChange = event => {
     const clonedFormData = { ...this.state.formData };
@@ -36,15 +42,16 @@ class RegistrationForm extends Component {
   registrationHandler = event => {
     event.preventDefault();
     const { email, password, confirmPassword } = this.state.formData;
+    const { history, location, match } = this.props.routeData;
+    // debugger;
     if (
-      //   validateEmail(email) &&
-      //   password.length > 8 &&
-      //   confirmPassword.length > 8 &&
-      //   password === confirmPassword
+      validateEmail(email) &&
+      checkPassword(password) &&
+      password === confirmPassword
 
       // checkForm(this.formRef.current)
 
-      email.length > 3
+      //   email.length > 3
     ) {
       const newUser = fetch("https://reqres.in/api/register", {
         method: "POST",
@@ -53,8 +60,6 @@ class RegistrationForm extends Component {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          // email: "eve.holt@reqres.in",
-          // password: "pistol"
           email: this.state.formData.email,
           password: this.state.formData.password
         })
@@ -64,71 +69,85 @@ class RegistrationForm extends Component {
           return response.json();
         })
         .then(data => {
-          // debugger;
+          this.setState({ dataFromServer: data });
           if (data.token) {
-            console.log(data);
             localStorage.setItem("token", `Bearer ${data.token}`);
-            this.setState({ modalIsOpen: true });
-            setTimeout(() => this.setState({ modalIsOpen: false }), 2500);
-          } else {
-            return data;
+
+            this.setState({ modalIsOpen: true }, () =>
+              setTimeout(() => {
+                this.setState({ modalIsOpen: false });
+                history.push(`/profile/${data.id}`);
+              }, 2500)
+            );
           }
         })
-        .then(data => {
-          console.log(data.error);
-        })
         .catch(error => {
-          // alert();
-          console.log(error);
+          console.log("Inside 'catch'", error);
         });
     } else {
       alert("Error");
     }
   };
   render() {
+    const registrationForm = (
+      <form ref={this.formRef} onSubmit={this.registrationHandler}>
+        <fieldset>
+          <legend>Registration</legend>
+          <div className={classes.RegistrationForm__row}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              ref={this.myRef}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className={classes.RegistrationForm__row}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className={classes.RegistrationForm__row}>
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              onChange={this.handleChange}
+            />
+          </div>
+          <Button label="Register" type="Success" />
+        </fieldset>
+      </form>
+    );
     return (
       <div className={classes.RegistrationForm}>
         {this.state.modalIsOpen ? (
-          <Modal
-            message="Congradulations! You've successfully registered."
-            type="Success"
-            onBackdropClick={this.handlerBackdropClick}
-          />
+          <Modal type="Success" onBackdropClick={this.handlerBackdropClick}>
+            <img src={successIcon} alt="Modal Success Icon" />
+            <h2>Congratulations!</h2>
+            <h4>You've successfully registered.</h4>
+          </Modal>
         ) : null}
-        <form action="" ref={this.formRef} onSubmit={this.registrationHandler}>
-          <fieldset>
-            <legend>Registration</legend>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                ref={this.myRef}
-                onChange={this.handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                onChange={this.handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                onChange={this.handleChange}
-              />
-            </div>
-            <Button label="Register" type="Success" />
-          </fieldset>
-        </form>
+        <div>
+          <h5>
+            <pre>Email: michael.lawson@reqres.in</pre>
+          </h5>
+          <h5>
+            <pre>Password: aA##ds548</pre>
+          </h5>
+        </div>
+        {registrationForm}
+        {this.state.dataFromServer.error ? (
+          <div className={classes.errorBox}>
+            {this.state.dataFromServer.error}
+          </div>
+        ) : null}
       </div>
     );
   }

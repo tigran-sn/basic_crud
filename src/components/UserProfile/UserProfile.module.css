@@ -1,0 +1,9 @@
+.UserProfile {
+  display: flex;
+}
+.UserProfile img {
+  margin-right: 20px;
+}
+.UserProfile h1 {
+  margin: 0 0 15px;
+}

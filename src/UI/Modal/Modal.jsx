@@ -5,7 +5,7 @@ import classes from "./Modal.module.css";
 const Modal = props => (
   <>
     <div className={[classes.Modal, classes[props.type]].join(" ")}>
-      {props.message}
+      {props.children}
       <button onClick={props.onBackdropClick}>&times;</button>
     </div>
     <Backdrop clicked={props.onBackdropClick} />

@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Layout from "./containers/Layout";
 import LoginPage from "./containers/LoginPage";
 import RegistrationPage from "./containers/RegistrationPage";
+import ProfilePage from "./containers/ProfilePage";
 import Page404 from "./components/Page404";
-import { Route, Link, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import classes from "./App.module.css";
 
 class App extends Component {
@@ -12,12 +13,12 @@ class App extends Component {
   };
   pageLinkHandler = () => {};
   render() {
-    let pageSuggestion;
-    if (this.state.isLoginPage) {
-      pageSuggestion = <Link to="/login">Login</Link>;
-    } else {
-      pageSuggestion = <Link to="/registration">Regitration</Link>;
-    }
+    // let pageSuggestion;
+    // if (this.state.isLoginPage) {
+    //   pageSuggestion = <Link to="/login">Login</Link>;
+    // } else {
+    //   pageSuggestion = <Link to="/registration">Regitration</Link>;
+    // }
     return (
       <Router>
         <div className={classes.App}>
@@ -26,6 +27,7 @@ class App extends Component {
               <Route exact path="/" component={LoginPage} />
               <Route path="/login" component={LoginPage} />
               <Route path="/registration" component={RegistrationPage} />
+              <Route path="/profile/:id" component={ProfilePage} />
               <Route component={Page404} />
             </Switch>
             {/* <LoginPage /> */}
